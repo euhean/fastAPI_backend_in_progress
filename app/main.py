@@ -7,6 +7,7 @@ models.Base.metadata.create_all(engine)
 
 app = FastAPI()
 
+
 def get_db():
     db = SessionLocal()
     try:
@@ -14,9 +15,11 @@ def get_db():
     finally:
         db.close()
 
+
 @app.get("/")
 def root():
     return {"message": 'Hello world!'}
+
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -24,6 +27,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     return crud.create_user(db=db, user=user)
+
 
 @app.post("/users/{user_id}", response_model=schemas.User)
 def edit_user_profile(user_id: int, user: schemas.UserBase, db: Session = Depends(get_db)):
@@ -36,6 +40,7 @@ def edit_user_profile(user_id: int, user: schemas.UserBase, db: Session = Depend
     db.refresh(db_user)
     return db_user
 
+
 @app.delete("/users/{user_id}")
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
@@ -46,10 +51,12 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     db.refresh(db_user)
     return {"message": "User  deleted succesfully"}
 
+
 @app.get("/users/", response_model=list[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip=skip, limit=limit)
     return users
+
 
 @app.get("/users/{user_id}", response_model=schemas.User)
 def read_user(user_id: int, db: Session = Depends(get_db)):
@@ -58,11 +65,13 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
+
 @app.post("/users/{user_id}/items/", response_model=schemas.Booking)
 def create_booking_for_user(
-    user_id: int, booking: schemas.BookingCreate, db: Session = Depends(get_db)
+        user_id: int, booking: schemas.BookingCreate, db: Session = Depends(get_db)
 ):
     return crud.create_user_booking(db=db, booking=booking, user_id=user_id)
+
 
 @app.get("/items/", response_model=list[schemas.Booking])
 def read_bookings(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
