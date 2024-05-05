@@ -24,12 +24,12 @@ class UserBase(BaseModel):
     name: str
     email: str
     birthdate: date
-    gender: str
-    telephone: str
-    adress: str
-    city: str
-    postal_code: str
-    country: str
+    gender: Union[str, None] = None
+    telephone: Union[str, None] = None
+    adress: Union[str, None] = None
+    city: Union[str, None] = None
+    postal_code: Union[str, None] = None
+    country: Union[str, None] = None
     job: Union[str, None] = None
     company: Union[str, None] = None
     hobbies: Union[str, None] = None
