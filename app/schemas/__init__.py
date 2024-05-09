@@ -1,3 +1,3 @@
-from admin import*
-from meal import*
-from user import*
+from .admin import*
+from .meal import*
+from .user import*

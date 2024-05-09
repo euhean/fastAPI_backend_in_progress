@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import date
-from meal import Meal
+from .meal import Meal
 
 
 class UserBase(BaseModel):
@@ -9,7 +9,7 @@ class UserBase(BaseModel):
     birthdate: date
     telephone: str
     table: str
-    paid = False
+    paid: bool = False
 
 class UserCreate(UserBase):
     password: str
