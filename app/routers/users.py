@@ -22,7 +22,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 @router.put("/{user_id}/", response_model=schemas.User)
 def edit_user_profile(user_id: int, user: schemas.UserBase, db: Session = Depends(get_db)):
     db_user = read_user(user_id=user_id, db=db)
-    for field, value in user.dict().items():
+    for field, value in user.model_dump().items():
         setattr(db_user, field, value)
     db.commit()
     db.refresh(db_user)
@@ -34,7 +34,6 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = read_user(user_id=user_id, db=db)
     db.delete(db_user)
     db.commit()
-    db.refresh(db_user)
     return {"message": "User  deleted succesfully"}
 
 

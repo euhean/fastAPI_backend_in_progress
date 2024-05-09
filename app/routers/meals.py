@@ -29,18 +29,27 @@ def read_user_meals(user_id: int, db: Session = Depends(get_db)):
     return read_user(user_id=user_id, db=db).meals
 
 
-@router.get("/{meal_id}/users/", response_model=schemas.Meal)
+@router.get("/{meal_id}/", response_model=schemas.Meal)
 def read_meal(meal_id: int, db: Session = Depends(get_db)):
     db_meal = dependencies.get_meal(db=db, meal_id=meal_id)
     if db_meal is None:
         raise HTTPException(status_code=404, detail="Meal not found")
     return db_meal
 
-@router.put("/{meal_id}/users/", response_model=schemas.Meal)
+@router.put("/{meal_id}/", response_model=schemas.Meal)
 def edit_meal(meal_id: int, meal: schemas.MealBase, db: Session = Depends(get_db)):
     db_meal = read_meal(meal_id=meal_id, db=db)
-    for field, value in meal.dict().items():
+    for field, value in meal.model_dump().items():
         setattr(db_meal, field, value)
     db.commit()
     db.refresh(db_meal)
     return db_meal
+
+
+@router.delete("/{meal_id}/")
+def delete_meal(meal_id: int, db: Session = Depends(get_db)):
+    db_meal = read_meal(meal_id=meal_id, db=db)
+    db.delete(db_meal)
+    db.commit()
+    return {"message": "Meal deleted succesfully"}
+

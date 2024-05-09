@@ -27,8 +27,8 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user(db: Session, user: schemas.UserCreate):
-    fake_password = user.password + "fakedpass"
-    db_user = models.User(**user.dict(), password=fake_password)
+    user.password += "fakedpass"
+    db_user = models.User(**user.model_dump())
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -44,8 +44,8 @@ def get_meals(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user_meal(db: Session, meal: schemas.MealCreate, user_id: int):
-    db_meal = models.Meal(**meal.dict(), user_id=user_id)
+    db_meal = models.Meal(**meal.model_dump(), user_id=user_id)
     db.add(db_meal)
-    db.commit
+    db.commit()
     db.refresh(db_meal)
     return db_meal

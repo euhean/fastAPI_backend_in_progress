@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Union
 
 
 class MealBase(BaseModel):
@@ -7,7 +8,7 @@ class MealBase(BaseModel):
     third: str
     beverage: str
     small_menu: bool
-    allergies: str
+    allergies: Union[str, None]
 
 class MealCreate(MealBase):
     pass
