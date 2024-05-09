@@ -4,8 +4,8 @@ from .. import dependencies, schemas
 from ..database import get_db
 
 router = APIRouter(
-    prefix="/items",
-    tags=["items"],
+    prefix="/users",
+    tags=["User"],
     dependencies=[Depends(dependencies.get_token_header)],
     responses={404: {"description": "Not found"}}
 )

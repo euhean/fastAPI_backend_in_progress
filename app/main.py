@@ -39,8 +39,8 @@ app.include_router(users_router)
 app.include_router(meals_router)
 app.include_router(
     admins_router,
-    prefix="/admin",
-    tags=["admin"],
+    prefix="/admins",
+    tags=["Admin"],
     dependencies=[Depends(get_token_header)],
     responses={418: {"description": "I'm a teapot"}}
 )

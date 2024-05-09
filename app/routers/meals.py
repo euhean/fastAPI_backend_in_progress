@@ -5,8 +5,8 @@ from ..database import get_db
 from .users import read_user
 
 router = APIRouter(
-    prefix="/items",
-    tags=["items"],
+    prefix="/meals",
+    tags=["Meal"],
     dependencies=[Depends(dependencies.get_token_header)],
     responses={404: {"description": "Not found"}},
 )
