@@ -1,11 +1,8 @@
 from fastapi import FastAPI, Depends
-from .database import engine, Base
 from .routers.users import router as users_router
 from .routers.meals import router as meals_router
 from .internal.admins import router as admins_router
 from .dependencies import get_query_token, get_token_header
-
-Base.metadata.create_all(engine)
 
 tags_metadata = [
     {

@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 
-@router.post("/users/", response_model=schemas.User)
+@router.post("/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = dependencies.get_user_by_email(db, email=user.email)
     if db_user:
@@ -19,7 +19,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return dependencies.create_user(db=db, user=user)
 
 
-@router.put("/users/{user_id}/", response_model=schemas.User)
+@router.put("/{user_id}/", response_model=schemas.User)
 def edit_user_profile(user_id: int, user: schemas.UserBase, db: Session = Depends(get_db)):
     db_user = read_user(user_id=user_id, db=db)
     for field, value in user.dict().items():
@@ -29,7 +29,7 @@ def edit_user_profile(user_id: int, user: schemas.UserBase, db: Session = Depend
     return db_user
 
 
-@router.delete("/users/{user_id}/")
+@router.delete("/{user_id}/")
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = read_user(user_id=user_id, db=db)
     db.delete(db_user)
@@ -38,12 +38,12 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     return {"message": "User  deleted succesfully"}
 
 
-@router.get("/users/", response_model=list[schemas.User])
+@router.get("/", response_model=list[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return dependencies.get_users(db, skip=skip, limit=limit)
 
 
-@router.get("/users/{user_id}/", response_model=schemas.User)
+@router.get("/{user_id}/", response_model=schemas.User)
 def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = dependencies.get_user(db, user_id=user_id)
     if db_user is None:
