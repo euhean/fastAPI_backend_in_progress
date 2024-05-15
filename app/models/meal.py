@@ -13,5 +13,6 @@ class Meal(Base):
     beverage = Column(String, nullable=False)
     small_menu = Column(Boolean, nullable=False)
     allergies = Column(String)
+    paid = Column(Boolean)
 
     user = relationship("User", back_populates="meals")

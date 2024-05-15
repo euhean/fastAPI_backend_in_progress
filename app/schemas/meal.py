@@ -9,6 +9,7 @@ class MealBase(BaseModel):
     beverage: str
     small_menu: bool
     allergies: Union[str, None]
+    paid: bool = False
 
 class MealCreate(MealBase):
     pass
