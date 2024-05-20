@@ -11,7 +11,7 @@ class User(Base):
     birthdate = Column(DateTime, nullable=False)
     password = Column(String, nullable=False)
     telephone = Column(String, unique=True, nullable=False)
-    table = Column(String, nullable=False)
+    table = Column(Integer, nullable=False)
     paid = Column(Boolean)
 
     meals = relationship("Meal", back_populates="user")

@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from .. import dependencies, schemas 
+from .. import dependencies, schemas
 from ..database import get_db
+from ... import utils
 
 router = APIRouter(
     prefix="/users",
@@ -21,8 +22,21 @@ def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @router.put("/{user_id}/", response_model=schemas.User)
 def edit_user_profile(user_id: int, user: schemas.UserBase, db: Session = Depends(get_db)):
+    data = user.model_dump().items()
     db_user = read_user(user_id=user_id, db=db)
-    for field, value in user.model_dump().items():
+    for field, value in data:
+        if field == 'email':
+            if not utils.verify_email(value):
+                raise HTTPException(status_code=422, detail="Invalid email format")
+        if field == 'birthdate':
+            if not utils.verify_birthdate(value):
+                raise HTTPException(status_code=422, detail="You must be 18 years or older")
+        if field == 'password':
+            if not utils.verify_password(value):
+                raise HTTPException(status_code=422, detail="Invalid password format")
+        if field == 'telephone':
+            if not utils.verify_telephone(value):
+                raise HTTPException(status_code=422, detail="Invalid phone number")
         setattr(db_user, field, value)
     db.commit()
     db.refresh(db_user)

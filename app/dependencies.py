@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 from typing import Annotated
 from fastapi import Header, HTTPException
+from .. import utils
 
 
 async def get_token_header(x_token: Annotated[str, Header()]):
@@ -31,8 +32,22 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user(db: Session, user: schemas.UserCreate):
-    user.password += "fakedpass"
-    db_user = models.User(**user.model_dump())
+    #Must properly hash password here
+    data = user.model_dump()
+    db_user = models.User(**data)
+    for field, value in data.items():
+        if field == 'email':
+            if not utils.verify_email(value):
+                raise HTTPException(status_code=422, detail="Invalid email format")
+        if field == 'birthdate':
+            if not utils.verify_birthdate(value):
+                raise HTTPException(status_code=422, detail="You must be 18 years or older")
+        if field == 'password':
+            if not utils.verify_password(value):
+                raise HTTPException(status_code=422, detail="Invalid password format")
+        if field == 'telephone':
+            if not utils.verify_telephone(value):
+                raise HTTPException(status_code=422, detail="Invalid phone number")
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -40,8 +55,19 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 
 def create_admin(db: Session, admin: schemas.AdminCreate):
-    admin.password += "fakedpass"
-    db_admin = models.Admin(**admin.model_dump())
+    #Must properly hash password here
+    data = admin.model_dump()
+    db_admin = models.Admin(**data)
+    for field, value in data.items():
+        if field == 'email':
+            if not utils.verify_email(value):
+                raise HTTPException(status_code=422, detail="Invalid email format")
+        if field == 'birthdate':
+            if not utils.verify_birthdate(value):
+                raise HTTPException(status_code=422, detail="You must be 18 years or older")
+        if field == 'password':
+            if not utils.verify_password(value):
+                raise HTTPException(status_code=422, detail="Invalid password format")
     db.add(db_admin)
     db.commit()
     db.refresh(db_admin)

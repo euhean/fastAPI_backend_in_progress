@@ -8,7 +8,7 @@ class UserBase(BaseModel):
     email: str
     birthdate: date
     telephone: str
-    table: str
+    table: int
     paid: bool = False
 
 class UserCreate(UserBase):
