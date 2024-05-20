@@ -2,10 +2,11 @@ from fastapi import FastAPI, Depends
 from .routers.users import router as users_router
 from .routers.meals import router as meals_router
 from .internal.admins import router as admins_router
-from .dependencies import get_query_token, get_token_header
+from .dependencies import get_query_token
 from .database import Base, engine
 
 Base.metadata.create_all(bind=engine)
+
 
 tags_metadata = [
     {
@@ -37,13 +38,7 @@ app = FastAPI(dependencies=[Depends(get_query_token)],
 
 app.include_router(users_router)
 app.include_router(meals_router)
-app.include_router(
-    admins_router,
-    prefix="/admins",
-    tags=["Admin"],
-    dependencies=[Depends(get_token_header)],
-    responses={418: {"description": "I'm a teapot"}}
-)
+app.include_router(admins_router)
 
 
 @app.get("/")
