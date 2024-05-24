@@ -36,7 +36,7 @@ def read_meal(meal_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Meal not found")
     return db_meal
 
-@router.put("/{meal_id}/", response_model=schemas.Meal)
+@router.put("/{meal_id}/edit_meal/", response_model=schemas.Meal)
 def edit_meal(meal_id: int, meal: schemas.MealBase, db: Session = Depends(get_db)):
     db_meal = read_meal(meal_id=meal_id, db=db)
     for field, value in meal.model_dump().items():
@@ -46,7 +46,7 @@ def edit_meal(meal_id: int, meal: schemas.MealBase, db: Session = Depends(get_db
     return db_meal
 
 
-@router.delete("/{meal_id}/")
+@router.delete("/{meal_id}/delete_meal/")
 def delete_meal(meal_id: int, db: Session = Depends(get_db)):
     db_meal = read_meal(meal_id=meal_id, db=db)
     db.delete(db_meal)

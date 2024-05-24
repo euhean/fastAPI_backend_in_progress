@@ -20,7 +20,7 @@ def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return dependencies.create_user(db=db, user=user)
 
 
-@router.put("/{user_id}/", response_model=schemas.User)
+@router.put("/{user_id}/edit_profile/", response_model=schemas.User)
 def edit_user_profile(user_id: int, user: schemas.UserBase, db: Session = Depends(get_db)):
     data = user.model_dump().items()
     db_user = read_user(user_id=user_id, db=db)
@@ -43,7 +43,7 @@ def edit_user_profile(user_id: int, user: schemas.UserBase, db: Session = Depend
     return db_user
 
 
-@router.delete("/{user_id}/")
+@router.delete("/{user_id}/delete_profile/")
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = read_user(user_id=user_id, db=db)
     db.delete(db_user)

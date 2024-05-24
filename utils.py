@@ -1,5 +1,6 @@
 import re
 from datetime import datetime, timedelta
+import bcrypt
 
 
 def verify_email(email: str) -> bool:
@@ -33,3 +34,7 @@ def verify_password(password: str) -> bool:
 def verify_telephone(phone_number: str) -> bool:
     pattern = r'^\d{9}$'
     return bool(re.match(pattern, phone_number))
+
+
+def check_password(plain_password, hashed_password):
+    return bcrypt.checkpw(plain_password.encode(), hashed_password)

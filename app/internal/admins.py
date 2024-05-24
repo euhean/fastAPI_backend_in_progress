@@ -19,7 +19,7 @@ def signup(admin: schemas.AdminCreate, db: Session = Depends(get_db)):
     return dependencies.create_admin(db=db, admin=admin)
 
 
-@router.put("/users/{user_id}/payment/")
+@router.put("/{user_id}/payment/")
 def update_payment(user_id: int, db: Session = Depends(get_db)):
     db_user = dependencies.get_user(db=db, user_id=user_id)
     for meal in db_user.meals:
@@ -30,7 +30,7 @@ def update_payment(user_id: int, db: Session = Depends(get_db)):
     return {"message" : "User payment completed"}
 
 
-@router.put("/meals/{meal_id}/payment")
+@router.put("/{meal_id}/payment")
 def set_meal_paid(meal_id: int, db: Session = Depends(get_db)):
     db_meal = dependencies.get_meal(db=db, meal_id=meal_id)
     db_meal.paid = True
