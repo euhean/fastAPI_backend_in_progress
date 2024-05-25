@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 from typing import Annotated
 from fastapi import Header, HTTPException
-from .. import utils
+from .. import utils, security
 
 
 async def get_token_header(x_token: Annotated[str, Header()]):
@@ -32,7 +32,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user(db: Session, user: schemas.UserCreate):
-    #Must properly hash password here
+    user.password = security.hash_password(user.password)
     data = user.model_dump()
     db_user = models.User(**data)
     for field, value in data.items():
@@ -55,7 +55,7 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 
 def create_admin(db: Session, admin: schemas.AdminCreate):
-    #Must properly hash password here
+    admin.password = security.hash_password(admin.password)
     data = admin.model_dump()
     db_admin = models.Admin(**data)
     for field, value in data.items():

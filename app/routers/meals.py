@@ -52,4 +52,3 @@ def delete_meal(meal_id: int, db: Session = Depends(get_db)):
     db.delete(db_meal)
     db.commit()
     return {"message": "Meal deleted succesfully"}
-
