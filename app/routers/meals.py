@@ -4,6 +4,7 @@ from .. import dependencies, schemas
 from ..database import get_db
 from .users import read_user
 
+
 router = APIRouter(
     prefix="/meals",
     tags=["Meal"],
@@ -21,7 +22,7 @@ def create_meal_for_user(
 
 @router.get("/", response_model=list[schemas.Meal])
 def read_meals(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    return dependencies.get_meals(db, skip=skip, limit=limit)
+    return dependencies.get_meals(db=db, skip=skip, limit=limit)
 
 
 @router.get("/users/{user_id}/", response_model=list[schemas.Meal])

@@ -1,7 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from .. import dependencies, schemas
+from typing import Annotated
 from ..database import get_db
+from ...security import* 
+
 
 router = APIRouter(
     prefix="/admins",
@@ -9,6 +12,25 @@ router = APIRouter(
     dependencies=[Depends(dependencies.get_token_header)],
     responses={418: {"description": "I'm a teapot"}}
 )
+
+
+@router.post("/token/")
+async def login(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    db: Session = Depends(get_db)
+) -> Token:
+    admin = authenticate_user(db, form_data.username, form_data.password)
+    if not admin:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": admin.email}, expires_delta=access_token_expires
+    )
+    return Token(access_token=access_token, token_type="bearer")
 
 
 @router.post("/signup/", response_model=schemas.Admin)

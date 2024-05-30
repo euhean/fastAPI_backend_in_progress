@@ -27,9 +27,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def get_user(db: Session, email: str):
     if utils.verify_email(email=email):
-        if email in db:
-            return dependencies.get_user_by_email(db=db, email=email)
-        raise HTTPException(status_code=404, detail="This email is not registered")
+        return dependencies.get_user_by_email(db=db, email=email)
     raise HTTPException(status_code=422, detail="Invalid email format") 
 
 

@@ -6,6 +6,7 @@ from ... import utils
 from typing import Annotated
 from ...security import *
 
+
 router = APIRouter(
     prefix="/users",
     tags=["User"],
@@ -35,7 +36,7 @@ async def login(
 
 @router.post("/signup/", response_model=schemas.User)
 def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = dependencies.get_user_by_email(db, email=user.email)
+    db_user = get_user(db=db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     #Send email to new users
@@ -50,7 +51,7 @@ def edit_user_profile(user: schemas.UserBase, db: Session = Depends(get_db)):
         if field == 'email':
             if not utils.verify_email(value):
                 raise HTTPException(status_code=422, detail="Invalid email format")
-        #Send email to new adress
+            #Send email to new adress
         if field == 'telephone':
             if not utils.verify_telephone(value):
                 raise HTTPException(status_code=422, detail="Invalid phone number")
