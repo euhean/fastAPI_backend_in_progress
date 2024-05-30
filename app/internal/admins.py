@@ -58,3 +58,10 @@ def set_meal_paid(meal_id: int, db: Session = Depends(get_db)):
     db_meal.paid = True
     db.commit()
     return {"message" : "Meal payment updated"}
+
+
+@router.get("/")
+def get_user_id(email: str, db: Session = Depends(get_db)):
+    if get_current_active_user(current_user=Annotated[models.Admin, Depends(get_current_user)]):
+        db_user = get_user(db=db, email=email)
+        return db_user.id
