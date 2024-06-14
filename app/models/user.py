@@ -15,3 +15,4 @@ class User(Base):
     paid = Column(Boolean)
 
     meals = relationship("Meal", back_populates="user")
+    mails = relationship("Mail", back_populates="user")

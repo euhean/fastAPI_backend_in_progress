@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import date
-from .meal import Meal
+from . import Meal, Mail
 
 
 class UserBase(BaseModel):
@@ -17,6 +17,7 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     meals: list[Meal] = []
+    mails: list[Mail] = []
 
     class Config:
         orm_mode = True

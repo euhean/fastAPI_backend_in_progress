@@ -37,6 +37,7 @@ def read_meal(meal_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Meal not found")
     return db_meal
 
+
 @router.put("/{meal_id}/edit_meal/", response_model=schemas.Meal)
 def edit_meal(meal_id: int, meal: schemas.MealBase, db: Session = Depends(get_db)):
     db_meal = read_meal(meal_id=meal_id, db=db)

@@ -9,14 +9,16 @@ class MealBase(BaseModel):
     beverage: str
     small_menu: bool
     allergies: Union[str, None]
-    paid: bool = False
+
 
 class MealCreate(MealBase):
     pass
 
+
 class Meal(MealBase):
     id: int
     user_id: int
+    paid: bool = False
 
     class Config:
         orm_mode = True
