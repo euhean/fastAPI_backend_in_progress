@@ -6,6 +6,9 @@ class AdminBase(BaseModel):
     name: str
     email: str
     birthdate: date
+    
+    class Config:
+        orm_mode = True
 
 
 class AdminCreate(AdminBase):
@@ -14,6 +17,3 @@ class AdminCreate(AdminBase):
 
 class Admin(AdminBase):
     id: str
-
-    class Config:
-        orm_mode = True

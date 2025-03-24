@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends
-from .routers.users import router as users_router
+import routers.users as users_router
 from .routers.meals import router as meals_router
 from .internal.admins import router as admins_router
 from .dependencies import get_query_token

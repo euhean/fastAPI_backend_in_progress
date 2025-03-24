@@ -1,5 +1,39 @@
-app/__pycache__/__init__.cpython-312.pyc
-app/__pycache__/database.cpython-312.pyc
-app/__pycache__/dependencies.cpython-312.pyc
-app/__pycache__/main.cpython-312.pyc
+# Python
+*.pyc
+*.pyo
+*.pyd
 __pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Poetry
+.poetry/
+poetry.lock
+*.env
+*.venv
+
+# FastAPI specific
+*.sqlite3
+*.db
+*.log
+
+# IDE/Editor-specific files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Other system files
+*.swp
+*~

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from . import models, schemas
+import models, schemas
 from typing import Annotated
 from fastapi import Header, HTTPException
 from .. import utils, security
@@ -62,10 +62,10 @@ def create_admin(db: Session, admin: schemas.AdminCreate):
         if field == 'email':
             if not utils.verify_email(value):
                 raise HTTPException(status_code=422, detail="Invalid email format")
-        if field == 'birthdate':
+        elif field == 'birthdate':
             if not utils.verify_birthdate(value):
                 raise HTTPException(status_code=422, detail="You must be 18 years or older")
-        if field == 'password':
+        elif field == 'password':
             if not utils.verify_password(value):
                 raise HTTPException(status_code=422, detail="Invalid password format")
     db.add(db_admin)

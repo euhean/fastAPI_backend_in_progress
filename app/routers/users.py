@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from .. import dependencies, schemas, models
+import dependencies, schemas, models
 from ..database import get_db
 from ... import utils
 from typing import Annotated

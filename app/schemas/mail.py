@@ -4,6 +4,9 @@ from pydantic import BaseModel
 class MailBase(BaseModel):
     subject: str
     body: str
+    
+    class Config:
+        orm_mode = True
 
 
 class MailCreate(MailBase):
@@ -14,6 +17,3 @@ class Mail(MailBase):
     id: int
     user_id: int
     sent: bool = False
-
-    class Config:
-        orm_mode = True
